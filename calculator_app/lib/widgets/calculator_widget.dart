@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:calculator_app/claculator_logic.dart';
 import 'package:calculator_app/models/calculator_model.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +88,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 112, 97, 97),
       body: SafeArea(
         child: Column(
           children: [
@@ -133,9 +132,14 @@ class _CalculatorAppState extends State<CalculatorApp> {
           SizedBox(height: 8),
 
           // Current operation display
-          if (_state.operation != null && _state.previousValue != null)
+          if (_state.lastExpression != null)
             Text(
-              "${CalculatorLogic.formatDisplay(_state.previousValue!)} ${_state.operation}",
+              _state.lastExpression!,
+              style: TextStyle(color: Colors.grey, fontSize: 20),
+            )
+          else if (_state.previousValue != null && _state.operation != null)
+            Text(
+              "${CalculatorLogic.formatDisplay(_state.previousValue!)} ${_state.operation} ${_state.shouldResetDisplay ? '' : _state.display}",
               style: TextStyle(color: Colors.grey, fontSize: 20),
             ),
 

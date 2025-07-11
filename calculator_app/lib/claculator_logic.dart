@@ -159,6 +159,7 @@ class CalculatorLogic {
       operation: null,
       shouldResetDisplay: true,
       history: newHistory,
+      lastExpression: expression,
     );
   }
 

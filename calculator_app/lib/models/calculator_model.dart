@@ -4,6 +4,7 @@ class CalculatorState {
   final String display;
   final double? currentValue;
   final double? previousValue;
+  final String? lastExpression;
   final String? operation;
   final bool shouldResetDisplay;
   final double memory;
@@ -13,6 +14,7 @@ class CalculatorState {
     this.display = "0",
     this.currentValue,
     this.previousValue,
+    this.lastExpression,
     this.operation,
     this.shouldResetDisplay = false,
     this.memory = 0,
@@ -23,6 +25,7 @@ class CalculatorState {
     String? display,
     double? currentValue,
     double? previousValue,
+    String? lastExpression,
     String? operation,
     bool? shouldResetDisplay,
     double? memory,
@@ -32,6 +35,7 @@ class CalculatorState {
       display: display ?? this.display,
       currentValue: currentValue ?? this.currentValue,
       previousValue: previousValue ?? this.previousValue,
+      lastExpression: lastExpression ?? this.lastExpression,
       operation: operation ?? this.operation,
       shouldResetDisplay: shouldResetDisplay ?? this.shouldResetDisplay,
       memory: memory ?? this.memory,
