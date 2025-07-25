@@ -146,7 +146,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           SizedBox(height: 8),
 
           // Main display
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Text(
               _state.display,
@@ -302,8 +302,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
           padding: EdgeInsets.all(16),
           child: ElevatedButton(
             onPressed: _clearHistory,
-            child: Text("Clear History"),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red[400]),
+            child: Text("Clear History"),
           ),
         ),
 

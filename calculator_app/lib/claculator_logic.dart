@@ -85,7 +85,7 @@ class CalculatorLogic {
       return state;
     }
 
-    final newDisplay = state.display + ".";
+    final newDisplay = "${state.display}.";
     return state.copyWith(
       display: newDisplay,
       currentValue: double.parse(newDisplay),
