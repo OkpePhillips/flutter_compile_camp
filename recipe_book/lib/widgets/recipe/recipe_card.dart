@@ -36,12 +36,17 @@ class ResponsiveRecipeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildImage(context, height: 200),
-            Padding(padding: EdgeInsets.all(16), child: _buildContent(context)),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildImage(context, height: 200),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: _buildContent(context),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -54,15 +59,17 @@ class ResponsiveRecipeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildImage(context, height: 150),
-            Padding(
-              padding: EdgeInsets.all(12),
-              child: _buildContent(context, isCompact: true),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildImage(context, height: 150),
+              Padding(
+                padding: EdgeInsets.all(12),
+                child: _buildContent(context, isCompact: true),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -111,7 +118,9 @@ class ResponsiveRecipeCard extends StatelessWidget {
           ),
         ],
         SizedBox(height: 8),
-        Row(
+        Wrap(
+          spacing: 8.0,
+          runSpacing: 4.0,
           children: [
             _buildInfoChip(
               icon: Icons.timer,

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_book/data/sample_recipes.dart';
+import 'package:recipe_book/screens/recipe_detial_screen.dart';
 import 'package:recipe_book/utils/responsive_breakpoints.dart';
+import 'package:recipe_book/widgets/recipe/recipe_card.dart';
+import 'package:recipe_book/widgets/recipe/recipe_grid.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,10 +120,130 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Helper methods
-  void _showSearch(BuildContext context) {
-    // Implement search functionality
+  Widget _buildQuickCategories(BuildContext context) {
+    final categories = [
+      'Breakfast',
+      'Lunch',
+      'Dinner',
+      'Vegan',
+      'Dessert',
+      'Snacks',
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmallScreen = constraints.maxWidth < 400;
+
+        if (isSmallScreen) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: categories.map((category) {
+                return ActionChip(
+                  label: Text(category),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Filter by: $category')),
+                    );
+                  },
+                  backgroundColor: Colors.grey.shade200,
+                  labelStyle: TextStyle(color: Colors.black87),
+                );
+              }).toList(),
+            ),
+          );
+        } else {
+          return SizedBox(
+            height: 40,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemCount: categories.length,
+              separatorBuilder: (_, __) => SizedBox(width: 8),
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return ActionChip(
+                  label: Text(category),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Filter by: $category')),
+                    );
+                  },
+                  backgroundColor: Colors.grey.shade200,
+                  labelStyle: TextStyle(color: Colors.black87),
+                );
+              },
+            ),
+          );
+        }
+      },
+    );
   }
+
+  Widget _buildRecentlyViewed(BuildContext context) {
+    final recentlyViewed = SampleData.recentlyViewed;
+
+    if (recentlyViewed.isEmpty) return SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Recently Viewed',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  _viewAllRecipes(context);
+                },
+                child: Text('View All'),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 16),
+        SizedBox(
+          height: 260,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemCount: recentlyViewed.length,
+            separatorBuilder: (_, __) => SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final recipe = recentlyViewed[index];
+              return SizedBox(
+                width: 200,
+                child: ResponsiveRecipeCard(
+                  recipe: recipe,
+                  isFavorite: false,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => RecipeDetailScreen(recipe: recipe),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Helper methods
+  void _showSearch(BuildContext context) {}
 
   void _navigateToShoppingList(BuildContext context) {
     // Navigate to shopping list

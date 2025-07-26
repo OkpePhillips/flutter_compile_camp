@@ -1,4 +1,3 @@
-// models/recipe.dart
 import 'package:recipe_book/models/ingredient.dart';
 import 'package:recipe_book/models/nutrition_info.dart';
 
