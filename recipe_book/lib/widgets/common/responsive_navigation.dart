@@ -5,6 +5,8 @@ import 'package:recipe_book/screens/recipe_list_screen.dart';
 import 'package:recipe_book/utils/responsive_breakpoints.dart';
 
 class ResponsiveNavigation extends StatefulWidget {
+  const ResponsiveNavigation({super.key});
+
   @override
   _ResponsiveNavigationState createState() => _ResponsiveNavigationState();
 }

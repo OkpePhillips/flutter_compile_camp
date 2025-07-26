@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_book/data/sample_recipes.dart';
 import 'package:recipe_book/screens/recipe_detial_screen.dart';
+import 'package:recipe_book/screens/recipe_list_screen.dart';
 import 'package:recipe_book/utils/responsive_breakpoints.dart';
 import 'package:recipe_book/widgets/recipe/recipe_card.dart';
 import 'package:recipe_book/widgets/recipe/recipe_grid.dart';
@@ -106,7 +107,7 @@ class HomeScreen extends StatelessWidget {
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             TextButton(
-              onPressed: () => _viewAllRecipes(context),
+              onPressed: () => _viewAllRecipes(context, recent: false),
               child: Text('View All'),
             ),
           ],
@@ -203,7 +204,7 @@ class HomeScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  _viewAllRecipes(context);
+                  _viewAllRecipes(context, recent: true);
                 },
                 child: Text('View All'),
               ),
@@ -226,6 +227,7 @@ class HomeScreen extends StatelessWidget {
                   recipe: recipe,
                   isFavorite: false,
                   onTap: () {
+                    SampleData.addToRecentlyViewed(recipe);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -250,10 +252,19 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _exploreRecipes(BuildContext context) {
-    // Navigate to recipe list
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => RecipeListScreen()),
+    );
   }
 
-  void _viewAllRecipes(BuildContext context) {
-    // Navigate to all recipes
+  void _viewAllRecipes(BuildContext context, {required bool recent}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const RecipeListScreen(),
+        settings: RouteSettings(arguments: recent ? 'recent' : 'featured'),
+      ),
+    );
   }
 }
