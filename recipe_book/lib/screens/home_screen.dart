@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildHeroSection(BuildContext context) {
     return Container(
-      height: ResponsiveBreakpoints.isMobile(context) ? 200 : 300,
+      height: ResponsiveBreakpoints.isMobile(context) ? 300 : 300,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.white.withOpacity(0.9),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 1),
             ElevatedButton(
               onPressed: () => _exploreRecipes(context),
               style: ElevatedButton.styleFrom(

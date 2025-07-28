@@ -138,29 +138,6 @@ class SampleData {
     ),
   ];
 
-  static List<Recipe> recentlyViewed = [];
-
-  static void addToRecentlyViewed(Recipe recipe) {
-    recentlyViewed.removeWhere((r) => r.id == recipe.id);
-
-    recentlyViewed.insert(0, recipe);
-  }
-
-  static List<Recipe> favorites = [];
-
-  static bool isFavorite(Recipe recipe) {
-    return favorites.any((r) => r.id == recipe.id);
-  }
-
-  static void toggleFavorite(Recipe recipe) {
-    final existingIndex = favorites.indexWhere((r) => r.id == recipe.id);
-    if (existingIndex >= 0) {
-      favorites.removeAt(existingIndex);
-    } else {
-      favorites.add(recipe);
-    }
-  }
-
   static final allRecipes = [
     Recipe(
       id: 'r1',
@@ -697,4 +674,26 @@ class SampleData {
       createdAt: DateTime(2025, 4, 1),
     ),
   ];
+  static List<Recipe> recentlyViewed = [];
+
+  static void addToRecentlyViewed(Recipe recipe) {
+    recentlyViewed.removeWhere((r) => r.id == recipe.id);
+
+    recentlyViewed.insert(0, recipe);
+  }
+
+  static List<Recipe> favorites = [];
+
+  static bool isFavorite(Recipe recipe) {
+    return favorites.any((r) => r.id == recipe.id);
+  }
+
+  static void toggleFavorite(Recipe recipe) {
+    final existingIndex = favorites.indexWhere((r) => r.id == recipe.id);
+    if (existingIndex >= 0) {
+      favorites.removeAt(existingIndex);
+    } else {
+      favorites.add(recipe);
+    }
+  }
 }

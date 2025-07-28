@@ -26,7 +26,7 @@ class ResponsiveRecipeGrid extends StatelessWidget {
         int crossAxisCount;
 
         if (constraints.maxWidth >= 900) {
-          crossAxisCount = 3;
+          crossAxisCount = 4;
         } else if (constraints.maxWidth >= 600) {
           crossAxisCount = 2;
         } else {
