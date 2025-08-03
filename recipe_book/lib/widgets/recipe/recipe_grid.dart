@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_book/data/sample_recipes.dart';
 import 'package:recipe_book/models/recipe.dart';
-import 'package:recipe_book/screens/recipe_detial_screen.dart';
 import 'package:recipe_book/widgets/recipe/recipe_card.dart';
 
 class ResponsiveRecipeGrid extends StatelessWidget {
@@ -9,6 +7,7 @@ class ResponsiveRecipeGrid extends StatelessWidget {
   final int maxItems;
   final void Function(Recipe)? onFavorite;
   final bool Function(Recipe)? isFavorite;
+  final void Function(Recipe)? onTap;
 
   const ResponsiveRecipeGrid({
     super.key,
@@ -16,6 +15,7 @@ class ResponsiveRecipeGrid extends StatelessWidget {
     this.maxItems = 6,
     this.isFavorite,
     this.onFavorite,
+    this.onTap,
   });
 
   @override
@@ -49,15 +49,7 @@ class ResponsiveRecipeGrid extends StatelessWidget {
             final recipe = displayRecipes[index];
             return ResponsiveRecipeCard(
               recipe: recipe,
-              onTap: () {
-                SampleData.addToRecentlyViewed(recipe);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => RecipeDetailScreen(recipe: recipe),
-                  ),
-                );
-              },
+              onTap: () => onTap?.call(recipe),
               onFavorite: () => onFavorite?.call(recipe),
               isFavorite: isFavorite?.call(recipe) ?? false,
             );

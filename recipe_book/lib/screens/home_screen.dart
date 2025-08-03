@@ -84,46 +84,49 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeroSection(BuildContext context) {
-    return Container(
-      height: ResponsiveBreakpoints.isMobile(context) ? 300 : 300,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.orange[400]!, Colors.deepOrange[600]!],
+    return Center(
+      child: Container(
+        width: MediaQuery.sizeOf(context).width * 0.7,
+        height: ResponsiveBreakpoints.isMobile(context) ? 300 : 300,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.orange[400]!, Colors.deepOrange[600]!],
+          ),
+          borderRadius: BorderRadius.circular(16),
         ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome to Recipe Book',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Welcome to Recipe Book',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Discover amazing recipes for every occasion',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.white.withOpacity(0.9),
+              SizedBox(height: 8),
+              Text(
+                'Discover amazing recipes for every occasion',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white.withOpacity(0.9),
+                ),
               ),
-            ),
-            SizedBox(height: 1),
-            ElevatedButton(
-              onPressed: () => _exploreRecipes(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.orange[600],
+              SizedBox(height: 1),
+              ElevatedButton(
+                onPressed: () => _exploreRecipes(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.orange[600],
+                ),
+                child: Text('Explore Recipes'),
               ),
-              child: Text('Explore Recipes'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -155,6 +158,16 @@ class _HomeScreenState extends State<HomeScreen> {
           isFavorite: (recipe) => SampleData.isFavorite(recipe),
           onFavorite: (recipe) {
             SampleData.toggleFavorite(recipe);
+            setState(() {});
+          },
+          onTap: (recipe) async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => RecipeDetailScreen(recipe: recipe),
+              ),
+            );
+            SampleData.addToRecentlyViewed(recipe);
             setState(() {});
           },
         ),
