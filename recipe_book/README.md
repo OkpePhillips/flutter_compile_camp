@@ -14,3 +14,10 @@ This is the week 3 project of the Flutter Bootcamp. The project aims to showcase
 
 - Responsive navigation using Drawer in mobile and NavigationRail in Tablet and Desktop modes
 
+## Deployment URL
+
+[You can access deployed app here](https://recipes-qim7p9u-okpephillips.globeapp.dev)
+
+## Demo Video
+[Demo Video URL](https://youtu.be/xWHdhEAMAk0)
+
