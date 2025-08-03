@@ -36,17 +36,12 @@ class ResponsiveRecipeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildImage(context, height: 200),
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: _buildContent(context),
-              ),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildImage(context, height: 200),
+            Padding(padding: EdgeInsets.all(16), child: _buildContent(context)),
+          ],
         ),
       ),
     );

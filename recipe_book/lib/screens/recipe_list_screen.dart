@@ -3,9 +3,11 @@ import 'package:recipe_book/data/sample_recipes.dart';
 import 'package:recipe_book/models/recipe.dart';
 import 'package:recipe_book/screens/recipe_detial_screen.dart';
 import 'package:recipe_book/widgets/recipe/recipe_card.dart';
+import 'package:recipe_book/widgets/search/search_bar.dart';
 
 class RecipeListScreen extends StatefulWidget {
-  const RecipeListScreen({super.key});
+  final bool startSearch;
+  const RecipeListScreen({super.key, this.startSearch = false});
 
   @override
   State<RecipeListScreen> createState() => _RecipeListScreenState();
@@ -21,6 +23,16 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+
+    _allRecipes = SampleData.allRecipes;
+    _title = 'All Recipes';
+    _filteredRecipes = _allRecipes;
+
+    if (widget.startSearch) {
+      Future.delayed(Duration.zero, () {
+        showSearch(context: context, delegate: RecipeSearchDelegate());
+      });
+    }
   }
 
   @override
@@ -68,17 +80,6 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search recipes...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
             Expanded(
               child: _filteredRecipes.isEmpty
                   ? const Center(child: Text('No recipes found.'))

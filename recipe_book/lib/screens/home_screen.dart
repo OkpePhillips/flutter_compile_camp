@@ -1,13 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_book/data/sample_recipes.dart';
+import 'package:recipe_book/models/recipe.dart';
 import 'package:recipe_book/screens/recipe_detial_screen.dart';
 import 'package:recipe_book/screens/recipe_list_screen.dart';
 import 'package:recipe_book/utils/responsive_breakpoints.dart';
 import 'package:recipe_book/widgets/recipe/recipe_card.dart';
 import 'package:recipe_book/widgets/recipe/recipe_grid.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  late List<Recipe> _allRecipes;
+  late List<Recipe> _filteredRecipes;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+
+    setState(() {
+      _filteredRecipes = _allRecipes.where((recipe) {
+        return recipe.title.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +149,11 @@ class HomeScreen extends StatelessWidget {
         ResponsiveRecipeGrid(
           recipes: SampleData.featuredRecipes,
           maxItems: ResponsiveBreakpoints.isMobile(context) ? 4 : 6,
+          isFavorite: (recipe) => SampleData.isFavorite(recipe),
+          onFavorite: (recipe) {
+            SampleData.toggleFavorite(recipe);
+            setState(() {});
+          },
         ),
       ],
     );
@@ -225,15 +263,20 @@ class HomeScreen extends StatelessWidget {
                 width: 200,
                 child: ResponsiveRecipeCard(
                   recipe: recipe,
-                  isFavorite: false,
-                  onTap: () {
-                    SampleData.addToRecentlyViewed(recipe);
-                    Navigator.push(
+                  isFavorite: SampleData.isFavorite(recipe),
+                  onFavorite: () {
+                    SampleData.toggleFavorite(recipe);
+                    setState(() {});
+                  },
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => RecipeDetailScreen(recipe: recipe),
                       ),
                     );
+                    SampleData.addToRecentlyViewed(recipe);
+                    setState(() {});
                   },
                 ),
               );
@@ -245,7 +288,14 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Helper methods
-  void _showSearch(BuildContext context) {}
+  void _showSearch(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const RecipeListScreen(startSearch: true),
+      ),
+    );
+  }
 
   void _navigateToShoppingList(BuildContext context) {
     // Navigate to shopping list

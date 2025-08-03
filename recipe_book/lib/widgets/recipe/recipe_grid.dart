@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_book/data/sample_recipes.dart';
 import 'package:recipe_book/models/recipe.dart';
 import 'package:recipe_book/screens/recipe_detial_screen.dart';
 import 'package:recipe_book/widgets/recipe/recipe_card.dart';
@@ -49,6 +50,7 @@ class ResponsiveRecipeGrid extends StatelessWidget {
             return ResponsiveRecipeCard(
               recipe: recipe,
               onTap: () {
+                SampleData.addToRecentlyViewed(recipe);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
