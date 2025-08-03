@@ -19,10 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<Recipe> _allRecipes;
   late List<Recipe> _filteredRecipes;
 
+  String? _selectedCategory;
+  late List<Recipe> _filteredFeaturedRecipes;
+  late List<Recipe> _filteredRecentlyViewed;
+
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+
+    _allRecipes = SampleData.allRecipes;
+    _applyFilters();
   }
 
   void _onSearchChanged() {
@@ -33,6 +40,32 @@ class _HomeScreenState extends State<HomeScreen> {
         return recipe.title.toLowerCase().contains(query);
       }).toList();
     });
+  }
+
+  void _applyFilters() {
+    setState(() {
+      if (_selectedCategory == null) {
+        _filteredFeaturedRecipes = SampleData.featuredRecipes;
+        _filteredRecentlyViewed = SampleData.recentlyViewed;
+      } else {
+        _filteredFeaturedRecipes = SampleData.featuredRecipes.where((recipe) {
+          return recipe.category == _selectedCategory!;
+        }).toList();
+
+        _filteredRecentlyViewed = SampleData.recentlyViewed.where((recipe) {
+          return recipe.category == _selectedCategory!;
+        }).toList();
+      }
+    });
+  }
+
+  void _onCategorySelected(String category) {
+    if (_selectedCategory == category) {
+      _selectedCategory = null;
+    } else {
+      _selectedCategory = category;
+    }
+    _applyFilters();
   }
 
   @override
@@ -153,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(height: 16),
         ResponsiveRecipeGrid(
-          recipes: SampleData.featuredRecipes,
+          recipes: _filteredFeaturedRecipes,
           maxItems: ResponsiveBreakpoints.isMobile(context) ? 4 : 6,
           isFavorite: (recipe) => SampleData.isFavorite(recipe),
           onFavorite: (recipe) {
@@ -177,8 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildQuickCategories(BuildContext context) {
     final categories = [
-      'Breakfast',
-      'Lunch',
+      'Main Course',
+      'Beverages',
       'Dinner',
       'Vegan',
       'Dessert',
@@ -196,15 +229,16 @@ class _HomeScreenState extends State<HomeScreen> {
               spacing: 8,
               runSpacing: 8,
               children: categories.map((category) {
+                final isSelected = _selectedCategory == category;
                 return ActionChip(
                   label: Text(category),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Filter by: $category')),
-                    );
-                  },
-                  backgroundColor: Colors.grey.shade200,
-                  labelStyle: TextStyle(color: Colors.black87),
+                  onPressed: () => _onCategorySelected(category),
+                  backgroundColor: isSelected
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey.shade200,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black87,
+                  ),
                 );
               }).toList(),
             ),
@@ -219,15 +253,16 @@ class _HomeScreenState extends State<HomeScreen> {
               separatorBuilder: (_, __) => SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final category = categories[index];
+                final isSelected = _selectedCategory == category;
                 return ActionChip(
                   label: Text(category),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Filter by: $category')),
-                    );
-                  },
-                  backgroundColor: Colors.grey.shade200,
-                  labelStyle: TextStyle(color: Colors.black87),
+                  onPressed: () => _onCategorySelected(category),
+                  backgroundColor: isSelected
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey.shade200,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black87,
+                  ),
                 );
               },
             ),
@@ -274,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: recentlyViewed.length,
             separatorBuilder: (_, __) => SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final recipe = recentlyViewed[index];
+              final recipe = _filteredRecentlyViewed[index];
               return SizedBox(
                 width: 200,
                 child: ResponsiveRecipeCard(
