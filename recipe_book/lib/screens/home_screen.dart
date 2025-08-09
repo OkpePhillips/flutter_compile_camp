@@ -212,8 +212,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final categories = [
       'Main Course',
       'Beverages',
-      'Dinner',
-      'Vegan',
+      'Breakfast',
+      'Soup',
       'Dessert',
       'Snacks',
     ];
