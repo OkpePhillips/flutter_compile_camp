@@ -8,7 +8,8 @@ This project is designed to showcase my understanding of Riverpod concepts. It i
 - ref.watch() vs ref.read() usage
 - State immutability principles
 
-https://github.com/OkpePhillips/flutter_compile_camp/blob/6690b4ae38a259f652eaa4df2906f950d4462828/todo_app/todo_app%20screenshot.jpg
+![Desktop app](https://github.com/OkpePhillips/flutter_compile_camp/blob/6690b4ae38a259f652eaa4df2906f950d4462828/todo_app/todo_app%20screenshot.jpg)
+
 
 ## Core Features
 
