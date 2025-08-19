@@ -120,7 +120,6 @@ class ModernJSONPlaceholderService {
     T Function(dynamic json) parser,
   ) async {
     final url = '$_baseUrl$endpoint';
-    print('🌐 GET request to: $url');
 
     try {
       final response = await _client
@@ -134,9 +133,6 @@ class ModernJSONPlaceholderService {
           )
           .timeout(_timeout);
 
-      print('📡 Response status: ${response.statusCode}');
-      print('📊 Response length: ${response.body.length} chars');
-
       return switch (response.statusCode) {
         >= 200 && < 300 => () {
           try {
@@ -149,7 +145,6 @@ class ModernJSONPlaceholderService {
               statusCode: response.statusCode,
             );
           } catch (parseError) {
-            print('❌ Parse error: $parseError');
             return _handleError<T>(parseError, response: response);
           }
         }(),
@@ -157,7 +152,6 @@ class ModernJSONPlaceholderService {
         _ => _handleError<T>('HTTP ${response.statusCode}', response: response),
       };
     } catch (error) {
-      print('❌ Network error: $error');
       return _handleError<T>(error);
     }
   }
@@ -169,8 +163,6 @@ class ModernJSONPlaceholderService {
     T Function(dynamic json) parser,
   ) async {
     final url = '$_baseUrl$endpoint';
-    print('🌐 POST request to: $url');
-    print('📤 Request body: ${json.encode(body)}');
 
     try {
       final response = await _client

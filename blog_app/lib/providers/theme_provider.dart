@@ -9,8 +9,10 @@ final themeProvider = StateProvider<AppThemeMode>((ref) => AppThemeMode.light);
 
 /// Light theme
 final lightTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 243, 175, 16)),
-  scaffoldBackgroundColor: const Color.fromARGB(255, 241, 236, 110),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: const Color.fromARGB(255, 243, 175, 16),
+  ),
+  scaffoldBackgroundColor: const Color.fromARGB(255, 237, 237, 224),
   useMaterial3: true,
 );
 

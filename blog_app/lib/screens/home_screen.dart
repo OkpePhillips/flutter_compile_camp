@@ -5,6 +5,7 @@ import 'package:blog_app/screens/post_detail_screen.dart';
 import 'package:blog_app/services/api_service.dart';
 import 'package:blog_app/widgets/error_handler.dart';
 import 'package:blog_app/widgets/post_card.dart';
+import 'package:blog_app/widgets/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,7 +21,6 @@ class ModernPostsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Blog Posts'),
-        backgroundColor: Colors.amber[200],
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -52,6 +52,15 @@ class ModernPostsScreen extends ConsumerWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () => _showAddPostDialog(context, ref),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PreferencesScreen()),
+              );
+            },
           ),
         ],
       ),

@@ -1,4 +1,7 @@
 import 'package:blog_app/providers/comment_provider.dart';
+import 'package:blog_app/screens/user_profile_screen.dart';
+import 'package:blog_app/widgets/comment_card.dart';
+import 'package:blog_app/widgets/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:blog_app/models/post.dart';
@@ -13,6 +16,9 @@ class PostDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider(post.userId));
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(title: Text(post.title)),
       body: SingleChildScrollView(
@@ -22,78 +28,40 @@ class PostDetailScreen extends ConsumerWidget {
           children: [
             // Author info (same as card)
             userAsyncValue.when(
-              data: (user) => Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    radius: 28,
-                    child: Text(
-                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+              data: (user) => UserCard(
+                user: user,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AuthorDetailScreen(user: user),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user.displayName,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        Text(
-                          user.email,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-              loading: () => Row(
-                children: const [
-                  CircleAvatar(
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  Text('Loading author...'),
-                ],
+              loading: () => const ListTile(
+                leading: CircleAvatar(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                title: Text("Loading author..."),
               ),
-              error: (error, _) => Row(
-                children: const [
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, color: Colors.white),
-                  ),
-                  SizedBox(width: 12),
-                  Text('Unknown Author'),
-                ],
+              error: (error, _) => ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: colorScheme.onSurfaceVariant,
+                  child: Icon(Icons.person, color: colorScheme.primary),
+                ),
+                title: Text("Unknown Author"),
               ),
             ),
-
             const SizedBox(height: 24),
-
             // Title
             Text(
               post.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 height: 1.3,
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
 
@@ -105,7 +73,7 @@ class PostDetailScreen extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 16,
                 height: 1.6,
-                color: Colors.grey[800],
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
 
@@ -114,18 +82,32 @@ class PostDetailScreen extends ConsumerWidget {
             // Metadata footer
             Row(
               children: [
-                const Icon(Icons.article, size: 18, color: Colors.grey),
+                Icon(
+                  Icons.article,
+                  size: 18,
+                  color: colorScheme.onSurfaceVariant,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   "Post #${post.id}",
-                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                  style: TextStyle(
+                    color: colorScheme.onSurfaceVariant,
+                    fontSize: 13,
+                  ),
                 ),
                 const Spacer(),
-                const Icon(Icons.person, size: 18, color: Colors.grey),
+                Icon(
+                  Icons.person,
+                  size: 18,
+                  color: colorScheme.onSurfaceVariant,
+                ),
                 const SizedBox(width: 4),
                 Text(
                   "User ${post.userId}",
-                  style: const TextStyle(color: Colors.grey, fontSize: 13),
+                  style: TextStyle(
+                    color: colorScheme.onSurfaceVariant,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
@@ -141,19 +123,7 @@ class PostDetailScreen extends ConsumerWidget {
                 .when(
                   data: (comments) => Column(
                     children: comments
-                        .map(
-                          (c) => ListTile(
-                            title: Text(
-                              c.name,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(c.body),
-                            trailing: Text(
-                              c.email,
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        )
+                        .map((c) => CommentCard(comment: c))
                         .toList(),
                   ),
                   loading: () =>

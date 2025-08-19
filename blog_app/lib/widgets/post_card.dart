@@ -13,6 +13,9 @@ class ModernPostCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider(post.userId));
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
@@ -27,11 +30,11 @@ class ModernPostCard extends ConsumerWidget {
               data: (user) => Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: colorScheme.primary,
                     child: Text(
                       user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -46,12 +49,13 @@ class ModernPostCard extends ConsumerWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
+                            color: colorScheme.onSurface,
                           ),
                         ),
                         Text(
                           user.email,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: colorScheme.onSurfaceVariant,
                             fontSize: 12,
                           ),
                         ),
@@ -98,17 +102,26 @@ class ModernPostCard extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(width: 12),
-                  Text('Loading author...'),
+                  Text(
+                    'Loading author...',
+                    style: TextStyle(color: colorScheme.onSurfaceVariant),
+                  ),
                 ],
               ),
               error: (error, _) => Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, color: Colors.white),
+                    backgroundColor: colorScheme.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.person,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                   SizedBox(width: 12),
-                  Text('Unknown Author'),
+                  Text(
+                    'Unknown Author',
+                    style: TextStyle(color: colorScheme.onSurfaceVariant),
+                  ),
                 ],
               ),
             ),
@@ -122,6 +135,7 @@ class ModernPostCard extends ConsumerWidget {
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 height: 1.3,
+                color: colorScheme.onSurface,
               ),
             ),
 
@@ -132,7 +146,7 @@ class ModernPostCard extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 14,
                 height: 1.4,
-                color: const Color.fromARGB(255, 97, 97, 97),
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
 
@@ -141,18 +155,18 @@ class ModernPostCard extends ConsumerWidget {
             // Post metadata
             Row(
               children: [
-                Icon(Icons.article, size: 16, color: Colors.grey),
+                Icon(Icons.article, size: 16, color: colorScheme.outline),
                 SizedBox(width: 4),
                 Text(
                   'Post #${post.id}',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: colorScheme.outline, fontSize: 12),
                 ),
                 Spacer(),
-                Icon(Icons.person, size: 16, color: Colors.grey),
+                Icon(Icons.person, size: 16, color: colorScheme.outline),
                 SizedBox(width: 4),
                 Text(
                   'User ${post.userId}',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  style: TextStyle(color: colorScheme.outline, fontSize: 12),
                 ),
               ],
             ),
