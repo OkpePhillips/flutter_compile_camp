@@ -128,7 +128,6 @@ class ResponsiveRecipeCard extends StatelessWidget {
               label: '${recipe.servings}',
               color: Colors.green,
             ),
-            Spacer(),
             _buildRating(),
           ],
         ),
