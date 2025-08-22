@@ -55,3 +55,17 @@ The following are the core features of the app:
 5. Filter todos (All, Active, Completed)
 
 ---
+
+## Blog App
+
+This project is designed to showcase consumption of API using JSONPlaceHolder API. The blog app features blog list of blog posts as well as the associated comments. It also shows author's profile and a list of the posts they created.
+
+### Features
+
+- Fetch blog posts from the api and render it
+- Create new blog posts
+- Fetch comments
+- Fetch user details
+- Cache data to minimize api calls
+- Refresh blog posts through gestures
+- Theme setting
