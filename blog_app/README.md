@@ -15,3 +15,8 @@ This app uses JsonPlaceholder as the API service to demonstrate understanding of
 - Proper error handling
 - Search functionality
 
+### Screenshot
+[Screenshot](https://github.com/OkpePhillips/flutter_compile_camp/blob/main/blog_app/Screenshot_1755562426.png)
+
+### Demo
+[Demo Link](https://youtu.be/JAsMAFggQxQ)
