@@ -18,34 +18,39 @@ class RecipeDetailScreen extends StatelessWidget {
             _buildHeaderImage(),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTitle(context),
-                  const SizedBox(height: 8),
-                  _buildMetaInfo(),
-                  const SizedBox(height: 16),
-                  _buildSectionTitle('Description'),
-                  Text(recipe.description),
-                  const SizedBox(height: 16),
-                  _buildSectionTitle('Ingredients'),
-                  ...recipe.ingredients.map(
-                    (ingredient) => Text(
-                      '• ${ingredient.amount} ${ingredient.unit} ${ingredient.name}',
-                    ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTitle(context),
+                      const SizedBox(height: 8),
+                      _buildMetaInfo(),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Description'),
+                      Text(recipe.description),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Ingredients'),
+                      ...recipe.ingredients.map(
+                        (ingredient) => Text(
+                          '• ${ingredient.amount} ${ingredient.unit} ${ingredient.name}',
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Instructions'),
+                      ...recipe.instructions.asMap().entries.map(
+                        (entry) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Text('${entry.key + 1}. ${entry.value}'),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('Nutrition Info (per serving)'),
+                      _buildNutritionInfo(),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  _buildSectionTitle('Instructions'),
-                  ...recipe.instructions.asMap().entries.map(
-                    (entry) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text('${entry.key + 1}. ${entry.value}'),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildSectionTitle('Nutrition Info (per serving)'),
-                  _buildNutritionInfo(),
-                ],
+                ),
               ),
             ),
           ],
@@ -54,10 +59,19 @@ class RecipeDetailScreen extends StatelessWidget {
     );
   }
 
+
   Widget _buildHeaderImage() {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Image.network(recipe.imageUrl, fit: BoxFit.cover),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(recipe.imageUrl, fit: BoxFit.cover),
+          ),
+        ),
+      ),
     );
   }
 
