@@ -15,10 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  late List<Recipe> _allRecipes;
-  late List<Recipe> _filteredRecipes;
-
   String? _selectedCategory;
   late List<Recipe> _filteredFeaturedRecipes;
   late List<Recipe> _filteredRecentlyViewed;
@@ -26,20 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
-
-    _allRecipes = SampleData.allRecipes;
     _applyFilters();
-  }
-
-  void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase();
-
-    setState(() {
-      _filteredRecipes = _allRecipes.where((recipe) {
-        return recipe.title.toLowerCase().contains(query);
-      }).toList();
-    });
   }
 
   void _applyFilters() {
@@ -70,8 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
     super.dispose();
   }
 
